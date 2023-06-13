@@ -1,0 +1,61 @@
+/* SQL - (Structured Query Language)
+It is the language that we use when we try to interact with the database or we can say that SQL is basically a standard that all relational DBMS like Mysql implement.
+
+Mysql
+
+we will be using mysql throughout these tutorial but the concepts that we will learn can be applied to pretty much any relational databases.
+
+Working with Databases
+in order to start working with databases, we first need to create them and then select them to use that databases, after that we can make table in those databases to store the various data in tabular format as per our requirement.
+
+to create a database we use -
+CREATE DATABASE mydb*(we have already created a database)
+once the database is created , we can select that databases, by doing this we explicitly tell mysql that out of all the available databases which one of them we want to work upon.
+
+to select a database
+*"USE mydb"*
+
+*/
+
+1.Show all the data inside the table"customers"
+sel * from customers
+
+2. LIMIT CUSTOMERS DATA TO 3
+SELECT TOP 3 * FROM Customers;  
+OR
+SELECT * FROM Customers LIMIT 3;
+
+3.Select all the data of employees that work in Chennai and Mumbai
+SELECT * FROM Customers where City in ('Chennai','Mumbai');
+
+4.select name starting with letter S
+SELECT * FROM Customers where CustomerName like "S%";
+
+5. select the column "address" from the table"customers"
+SELECT Address FROM Customers;
+
+6.select column "address" where city is not delhi
+SELECT CustomerName, Address , City FROM Customers where City <> "Delhi";
+
+7. sort the column: name in asc and addrress in desc
+SELECT * FROM Customers ORDER BY CustomerName DESC;
+
+8. Add an customer name called "Mary" ,with address in 'Goa'
+SELECT * FROM Customers where CustomerName like 'Mary%' and City = 'Goa'
+ORDER BY CustomerName ASC;
+
+9. update address to gujarat where id is 1
+UPDATE Customers SET Address= 'gujarat' WHERE CustomerID = 1;
+
+10.delete the record where address='mumbai'
+DELETE FROM Customers WHERE Address = 'Mumbai';
+
+11.create a temporary name for the column "name"with 'N' and "address"as 'A'
+SELECT CustomerName AS N, Address AS A FROM Customers;
+
+12.select address and also count the column "name" and group by address
+SELECT Address, COUNT(CustomerName)
+FROM Customers
+GROUP BY Address
+ORDER BY  COUNT(CustomerName);
+
