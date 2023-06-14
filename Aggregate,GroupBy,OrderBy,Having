@@ -1,0 +1,131 @@
+/* 
+Group By:
+The SQL GROUP BY clause is used in collaboration with the SELECT statement to arrange identical data into groups. This GROUP BY clause
+follows the WHERE clause in a SELECT statement and precedes the ORDER BY clause.
+
+Syntax:
+SELECT column1, column2 FROM table_name WHERE [ conditions ] GROUP BY column1, column2 ORDER BY column1, column
+
+Having:
+While the GROUP BY Clause groups rows that have the same values into summary rows. The having clause is used with the where clause in order to find rows with certain conditions. The having clause is always used after the group By clause.
+
+Syntax:
+
+SELECT column1, column2 FROM table_name WHERE [ conditions ] GROUP BY column1, column2 HAVING [ conditions ]
+
+Order By:
+The ORDER BY keyword is used to sort the result-set in ascending or descending order.
+The ORDER BY keyword sorts the records in ascending order by default. To sort the records in descending order, use the DESC keyword.
+
+Syntax:
+
+SELECT column1, column2 FROM table_name WHERE [ conditions ] GROUP BY column1, column2 HAVING [ conditions ] ORDER BY column1,column2;
+
+Aggregate functions:
+Aggregate functions are functions that are performed over one or more values and return a single value. When an aggregate function is used
+along with a GROUP BY clause, it can return one or more values.
+
+The five aggregate functions that we can use with the SQL Order By statement are:
+AVG(): Calculates the average of the set of values.
+COUNT(): Returns the count of rows.
+SUM(): Calculates the arithmetic sum of the set of numeric values.
+MAX(): To find max value
+MIN(): To find min value
+
+*/
+***************************************************************************************
+In this assignment we will be using the DVD sales Schema having 4 tables.
+
+Create Statement:
+CREATE TABLE Actor(Actor_ID int(2),Actor_name varchar(30),Gender varchar(10),debut_year int(5));
+CREATE TABLE Director(Director_ID int(2),Director_name varchar(30),no_of_movies int(10));
+CREATE TABLE Movie(Movie_name varchar(30),release_year int(5),genre varchar(15),lead_1 int(2),lead_2 int(2),director_id int(2),box_collection int(10) );
+CREATE TABLE DVD(DVD_id int(2),Movie_name varchar(30),sale int(10));
+
+
+Insert Statement:
+insert into actor values(1,'Aamir Khan','male',1988);
+insert into actor values(2,'Shahrukh Khan','male',1992);
+insert into actor values(3,'Kareena Kapoor','female',2000);
+insert into actor values(4,'Kajol','female',1992);
+insert into actor values(5,'Anushka Sharma','female',2008);
+insert into actor values(6,'Ranbir Kapoor','male',2007);
+insert into actor values(7,'Alia Bhatt','female',2012);
+insert into actor values(8,'Ranveer Singh','male',2010);
+insert into actor values(9,'Deepika Padukone','female',2006);
+insert into actor values(10,'Shahid Kapoor','male',2003);
+insert into actor values(11,'Katrina Kaif','female',2003);
+insert into actor values(12,'Varun Dhawan','male',2012);
+
+insert into director values(1,'Rajkumar Hirani',10);
+insert into director values(2,'Sanjay Leela Bhansali',8);
+insert into director values(3,'Aditya Chopra',6);
+insert into director values(4,'Zoya Akhtar',3);
+insert into director values(5,'Imtiaz Ali',5);
+insert into director values(6,'Ayan Mukerji',4);
+insert into director values(7,'Santosh Sivan',9);
+insert into director values(8,'Farah Khan',4);
+
+insert into movie values('3 Idiots',2009,'comedy',1,3,1,989600000);
+insert into movie values('PK',2014,'satire',1,5,1,789600000);
+insert into movie values('Bajirao Mastani',2015,'historic',8,9,2,68960000);
+insert into movie values('Rab ne bana di jodi',2008,'romance',2,5,3,48960000);
+insert into movie values('Gully boy',2019,'Musical drama',8,7,4,28950000);
+insert into movie values('Jab we met',2007,'romance',10,3,5,18980000);
+insert into movie values('Padmavat',2018,'historic',8,9,2,38460000);
+insert into movie values('Yeh jawani hai deewani',2013,'romance',6,9,6,581600000);
+insert into movie values('Ashoka',2001,'historic',2,3,7,8796000);
+insert into movie values('Happy new year',2014,'comedy',2,9,8,68960000);
+
+insert into DVD values(1,'3 Idiots',8890);
+insert into DVD values(2,'PK',8790);
+insert into DVD values(3,'Bajirao Mastani',6810);
+insert into DVD values(4,'Rab ne bana di jodi',7920);
+insert into DVD values(5,'Gully boy',870);
+insert into DVD values(6,'Jab we met',4792);
+insert into DVD values(7,'Padmavat',590);
+insert into DVD values(8,'Yeh jawani hai deewani',2890);
+insert into DVD values(9,'Ashoka',730);
+insert into DVD values(10,'Happy new year',1690);
+***************************************************************************************
+Exercise:
+1. Display the count of actors and actresses.
+Select gender, Count(actor_id) as number from actor group by gender;
+
+2. Display the count of movies of each genre.
+Select genre, Count(movie_name) as number from Movie group by genre;
+
+3. Calculate the oldest released movie of each genre.
+Select genre, Min(release_year) as Oldest_movie from Movie group by genre;
+
+4. Calculate the total box office collection for movies of each genre.
+Select genre, Sum(box_collection) as 'Total box collection' from Movie group by genre;
+
+5. Display the name of director, current count of movies and total count of movies directed by him/her.
+Select Director_name, Count(movie_name) as 'Current count',  no_of_movies as 'Total Count' from Movie,Director where Movie.Director_id=Director.Director_id group by Movie.Director_id;
+
+6. Display the name of lead_1 actors, their count of movies and their total DVD sales.
+Select lead_1, Count(dvd.Movie_name) as 'No of movies' , Sum(sale) as 'Total Sale'
+from dvd,Movie
+where dvd.Movie_id=Movie.Movie_id
+group by lead_1;
+
+7. Show the release year and number of movies released in each year only if more than 1 movie is released each year.
+Select release_year,Count(movie_name) as 'No of movie'
+from Movie
+Group by release_year 
+having Count(movie_name)>1;
+
+8. Display the director name and their total box office collection which should be greater than 50 crores.
+Select Director_name, Sum(box_collection) as 'Total box collection' from Movie, Director 
+where Movie.Director_id=Director.Director_id 
+group by Movie.Director_id
+having Sum(box_collection) > 50,00,00,000;
+
+9. Give the count of movies of each genre in decreasing order of count.
+Select genre, Count(movie_name) as number from Movie group by genre order by  Count(movie_name) desc;
+
+10. Sort the movie names based on director names.
+Select Director_name, movie_name from Movie,Director where Movie.Director_id=Director.Director_id order by Director_name;
+
+
