@@ -1,2 +1,2 @@
-# SQL_CRUD
+# SQL_Notes
 SQL basics
